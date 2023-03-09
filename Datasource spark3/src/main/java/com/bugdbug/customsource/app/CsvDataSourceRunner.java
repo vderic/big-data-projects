@@ -16,7 +16,8 @@ public class CsvDataSourceRunner {
                 .appName("data_source_test")
                 .getOrCreate();
 
-        Dataset<Row> dataset = sparkSession.read().schema(getSchema()).format("com.bugdbug.customsource.csv.CSV")
+        //Dataset<Row> dataset = sparkSession.read().schema(getSchema()).format("com.bugdbug.customsource.csv.CSV").option("fileName", "/home/ubuntu/p/big-data-projects/Datasource spark3/src/test/resources/1000 Sales Records.csv").load();
+        Dataset<Row> dataset = sparkSession.read().schema(getSchema()).format("bugdbug")
                 .option("fileName", "/home/ubuntu/p/big-data-projects/Datasource spark3/src/test/resources/1000 Sales Records.csv").load();
         dataset.show();
 

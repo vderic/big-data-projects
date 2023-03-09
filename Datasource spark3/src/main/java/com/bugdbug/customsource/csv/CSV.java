@@ -5,10 +5,11 @@ import org.apache.spark.sql.connector.catalog.TableProvider;
 import org.apache.spark.sql.connector.expressions.Transform;
 import org.apache.spark.sql.types.StructType;
 import org.apache.spark.sql.util.CaseInsensitiveStringMap;
+import org.apache.spark.sql.sources.DataSourceRegister;
 
 import java.util.Map;
 
-public class CSV implements TableProvider {
+public class CSV implements TableProvider, DataSourceRegister {
     public CSV() {
 
     }
@@ -23,5 +24,9 @@ public class CSV implements TableProvider {
     @Override
     public boolean supportsExternalMetadata() {
         return true;
+    }
+
+    public String shortName() {
+	    return "bugdbug";
     }
 }
