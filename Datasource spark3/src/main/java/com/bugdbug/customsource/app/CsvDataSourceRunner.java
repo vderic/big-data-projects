@@ -7,7 +7,10 @@ import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.Metadata;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
+import org.apache.spark.sql.functions.*;
 import org.apache.spark.sql.SparkSession;
+import java.util.Map;
+import java.util.HashMap;
 
 public class CsvDataSourceRunner {
 
@@ -19,7 +22,15 @@ public class CsvDataSourceRunner {
         //Dataset<Row> dataset = sparkSession.read().schema(getSchema()).format("com.bugdbug.customsource.csv.CSV").option("fileName", "/home/ubuntu/p/big-data-projects/Datasource spark3/src/test/resources/1000 Sales Records.csv").load();
         Dataset<Row> dataset = sparkSession.read().schema(getSchema()).format("bugdbug")
                 .option("fileName", "/home/ubuntu/p/big-data-projects/Datasource spark3/src/test/resources/1000 Sales Records.csv").load();
-        dataset.show();
+
+	/*
+	dataset.createOrReplaceTempView("bug");
+	Dataset<Row> regionset = sparkSession.sql("select avg(Unit_Price), max(Order_ID) from bug");
+        regionset.show();
+	*/
+
+	Map<String, String> aggr = new HashMap<String, String>(){{ put("Unit_Price", "avg"); put("Total_Cost", "min");}};
+	dataset.groupBy("Item_Type").agg(aggr).show(false);
 
     }
 
@@ -27,18 +38,18 @@ public class CsvDataSourceRunner {
         StructField[] structFields = new StructField[]{
                 new StructField("Region", DataTypes.StringType, true, Metadata.empty()),
                 new StructField("Country", DataTypes.StringType, true, Metadata.empty()),
-                new StructField("Item Type", DataTypes.StringType, true, Metadata.empty()),
-                new StructField("Sales Channel", DataTypes.StringType, true, Metadata.empty()),
-                new StructField("Order Priority", DataTypes.StringType, true, Metadata.empty()),
-                new StructField("Order Date", DataTypes.StringType, true, Metadata.empty()),
-                new StructField("Order ID", DataTypes.IntegerType, true, Metadata.empty()),
-                new StructField("Ship Date", DataTypes.StringType, true, Metadata.empty()),
-                new StructField("Units Sold", DataTypes.IntegerType, true, Metadata.empty()),
-                new StructField("Unit Price", DataTypes.DoubleType, true, Metadata.empty()),
-                new StructField("Unit Cost", DataTypes.DoubleType, true, Metadata.empty()),
-                new StructField("Total Revenue", DataTypes.DoubleType, true, Metadata.empty()),
-                new StructField("Total Cost", DataTypes.DoubleType, true, Metadata.empty()),
-                new StructField("Total Profit", DataTypes.DoubleType, true, Metadata.empty())
+                new StructField("Item_Type", DataTypes.StringType, true, Metadata.empty()),
+                new StructField("Sales_Channel", DataTypes.StringType, true, Metadata.empty()),
+                new StructField("Order_Priority", DataTypes.StringType, true, Metadata.empty()),
+                new StructField("Order_Date", DataTypes.StringType, true, Metadata.empty()),
+                new StructField("Order_ID", DataTypes.IntegerType, true, Metadata.empty()),
+                new StructField("Ship_Date", DataTypes.StringType, true, Metadata.empty()),
+                new StructField("Units_Sold", DataTypes.IntegerType, true, Metadata.empty()),
+                new StructField("Unit_Price", DataTypes.DoubleType, true, Metadata.empty()),
+                new StructField("Unit_Cost", DataTypes.DoubleType, true, Metadata.empty()),
+                new StructField("Total_Revenue", DataTypes.DoubleType, true, Metadata.empty()),
+                new StructField("Total_Cost", DataTypes.DoubleType, true, Metadata.empty()),
+                new StructField("Total_Profit", DataTypes.DoubleType, true, Metadata.empty())
         };
         return new StructType(structFields);
     }
