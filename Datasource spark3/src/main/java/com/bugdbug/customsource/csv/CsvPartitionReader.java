@@ -37,11 +37,13 @@ public class CsvPartitionReader implements PartitionReader<InternalRow> {
 
     private void createCsvReader() throws URISyntaxException, FileNotFoundException {
         FileReader filereader;
-        URL resource = this.getClass().getClassLoader().getResource(this.fileName);
-        filereader = new FileReader(new File(resource.toURI()));
+        //URL resource = this.getClass().getClassLoader().getResource(this.fileName);
+        //filereader = new FileReader(new File(resource.toURI()));
+        filereader = new FileReader(new File(this.fileName));
         csvReader = new CSVReader(filereader);
         iterator = csvReader.iterator();
         iterator.next();
+	System.err.println("CreateCSvReader");
 
     }
 
