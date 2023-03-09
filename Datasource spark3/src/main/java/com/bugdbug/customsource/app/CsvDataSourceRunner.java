@@ -12,6 +12,10 @@ import org.apache.spark.sql.SparkSession;
 import java.util.Map;
 import java.util.HashMap;
 
+import java.nio.ByteBuffer;
+import org.apache.arrow.vector.util.DecimalUtility;
+import java.math.BigDecimal;
+
 public class CsvDataSourceRunner {
 
     public static void main(String[] args) {
@@ -31,6 +35,15 @@ public class CsvDataSourceRunner {
 
 	Map<String, String> aggr = new HashMap<String, String>(){{ put("Unit_Price", "avg"); put("Total_Cost", "min");}};
 	dataset.groupBy("Item_Type").agg(aggr).show(false);
+
+	byte[] b = new byte[16];
+	b[15] = 1;
+	ByteBuffer bb = ByteBuffer.wrap(b);
+	BigDecimal dec = DecimalUtility.getBigDecimalFromByteBuffer(bb, 4, 16);
+
+	System.out.println(dec.toString());
+
+
 
     }
 
