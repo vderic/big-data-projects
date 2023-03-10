@@ -46,6 +46,8 @@ public class CsvDataSourceRunner {
 
 	Map<String, String> aggr = new HashMap<String, String>(){{ put("Unit_Price", "sum"); put("Total_Cost", "avg");}};
 	dataset.groupBy("Item_Type").agg(aggr).show(false);
+
+//	dataset.show();
 	
 
 	byte[] b = new byte[32];

@@ -7,6 +7,7 @@ import org.apache.spark.sql.types.Metadata;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
 import org.apache.spark.sql.util.CaseInsensitiveStringMap;
+import org.apache.spark.sql.connector.expressions.aggregate.Aggregation;
 
 import java.util.Map;
 
@@ -14,20 +15,24 @@ public class CsvScan implements Scan {
     private StructType schema;
     private final Map<String, String> properties;
     private final CaseInsensitiveStringMap options;
+    private Aggregation aggregation = null;
 
     public CsvScan(StructType schema,
                    Map<String, String> properties,
-                   CaseInsensitiveStringMap options) {
+                   CaseInsensitiveStringMap options,
+		   Aggregation aggregation) {
 
         this.schema = schema;
         this.properties = properties;
         this.options = options;
+	this.aggregation = aggregation;
     }
 
     @Override
     public StructType readSchema() {
         //return schema;
 
+	if (aggregation != null) {
 	/* aggregate */
 	StructField[] structFields = new StructField[]{
                 new StructField("Item_Type", DataTypes.StringType, true, Metadata.empty()),
@@ -37,6 +42,7 @@ public class CsvScan implements Scan {
          };
 
 	schema = new StructType(structFields);
+	}
 
 	System.out.println(schema.toString());
 	return schema;

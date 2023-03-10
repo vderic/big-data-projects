@@ -20,6 +20,7 @@ public class CSVScanBuilder implements SupportsPushDownAggregates, SupportsPushD
     private final StructType schema;
     private final Map<String, String> properties;
     private final CaseInsensitiveStringMap options;
+    private Aggregation aggregation;
 
     public CSVScanBuilder(StructType schema,
                           Map<String, String> properties,
@@ -28,6 +29,7 @@ public class CSVScanBuilder implements SupportsPushDownAggregates, SupportsPushD
         this.schema = schema;
         this.properties = properties;
         this.options = options;
+	this.aggregation = null;
     }
 
     public boolean pushAggregation(Aggregation aggregation) {
@@ -55,6 +57,8 @@ public class CSVScanBuilder implements SupportsPushDownAggregates, SupportsPushD
 
 	    }
 	    System.out.println("END pushAggregation");
+
+	    this.aggregation = aggregation;
 	    return true;
     }
 
@@ -106,6 +110,6 @@ public class CSVScanBuilder implements SupportsPushDownAggregates, SupportsPushD
 
     @Override
     public Scan build() {
-        return new CsvScan(schema,properties,options);
+        return new CsvScan(schema,properties,options, aggregation);
     }
 }
