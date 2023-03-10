@@ -19,23 +19,30 @@ import java.math.BigDecimal;
 public class CsvDataSourceRunner {
 
     public static void main(String[] args) {
+
+	if (args.length != 1) {
+		System.out.println("java class csvfile");
+		return;
+	}
+
+	String filepath = args[0];
+
         SparkSession sparkSession = SparkSession.builder()
                 .appName("data_source_test")
                 .getOrCreate();
 
         //Dataset<Row> dataset = sparkSession.read().schema(getSchema()).format("com.bugdbug.customsource.csv.CSV").option("fileName", "/home/ubuntu/p/big-data-projects/Datasource spark3/src/test/resources/1000 Sales Records.csv").load();
         Dataset<Row> dataset = sparkSession.read().schema(getSchema()).format("bugdbug")
-                .option("fileName", "/home/ubuntu/p/big-data-projects/Datasource spark3/src/test/resources/1000 Sales Records.csv").load();
+                .option("fileName", filepath).load();
 
-	System.out.println("COUNT = " + dataset.count());
+	//System.out.println("COUNT = " + dataset.count());
 	/*
 	dataset.createOrReplaceTempView("bug");
 	Dataset<Row> regionset = sparkSession.sql("select avg(Unit_Price), max(Order_ID) from bug");
         regionset.show();
 	*/
 
-	/*
-	Map<String, String> aggr = new HashMap<String, String>(){{ put("Unit_Price", "avg"); put("Total_Cost", "min");}};
+	Map<String, String> aggr = new HashMap<String, String>(){{ put("Unit_Price", "sum"); put("Total_Cost", "avg");}};
 	dataset.groupBy("Item_Type").agg(aggr).show(false);
 
 	byte[] b = new byte[32];
@@ -47,7 +54,6 @@ public class CsvDataSourceRunner {
 
 	System.out.println(dec1.toString() + " " + dec2.toString());
 
-	*/
 
 
     }
