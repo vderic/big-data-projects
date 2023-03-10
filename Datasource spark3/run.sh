@@ -1,0 +1,2 @@
+spark-submit --class com.bugdbug.customsource.app.CsvDataSourceRunner --master local[2] target/spark3readdatasource-1.0-SNAPSHOT.jar "/home/ubuntu/p/big-data-projects/Datasource spark3/src/test/resources/aggregate.csv"
+#spark-submit --class com.bugdbug.customsource.app.CsvDataSourceRunner --master local[2] target/spark3readdatasource-1.0-SNAPSHOT.jar "/home/ubuntu/p/big-data-projects/Datasource spark3/src/test/resources/1000 Sales Records.csv"
