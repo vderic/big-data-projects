@@ -27,22 +27,27 @@ public class CsvDataSourceRunner {
         Dataset<Row> dataset = sparkSession.read().schema(getSchema()).format("bugdbug")
                 .option("fileName", "/home/ubuntu/p/big-data-projects/Datasource spark3/src/test/resources/1000 Sales Records.csv").load();
 
+	System.out.println("COUNT = " + dataset.count());
 	/*
 	dataset.createOrReplaceTempView("bug");
 	Dataset<Row> regionset = sparkSession.sql("select avg(Unit_Price), max(Order_ID) from bug");
         regionset.show();
 	*/
 
+	/*
 	Map<String, String> aggr = new HashMap<String, String>(){{ put("Unit_Price", "avg"); put("Total_Cost", "min");}};
 	dataset.groupBy("Item_Type").agg(aggr).show(false);
 
-	byte[] b = new byte[16];
+	byte[] b = new byte[32];
 	b[15] = 1;
+	b[31] = 2;
 	ByteBuffer bb = ByteBuffer.wrap(b);
-	BigDecimal dec = DecimalUtility.getBigDecimalFromByteBuffer(bb, 4, 16);
+	BigDecimal dec1 = DecimalUtility.getBigDecimalFromByteBuffer(bb, 4, 16);
+	BigDecimal dec2 = DecimalUtility.getBigDecimalFromByteBuffer(bb, 4, 16);
 
-	System.out.println(dec.toString());
+	System.out.println(dec1.toString() + " " + dec2.toString());
 
+	*/
 
 
     }

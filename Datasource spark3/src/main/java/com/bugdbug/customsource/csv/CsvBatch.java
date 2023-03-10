@@ -25,7 +25,13 @@ public class CsvBatch implements Batch {
 
     @Override
     public InputPartition[] planInputPartitions() {
-        return new InputPartition[]{new CsvInputPartition()};
+	int npart = 3;
+	InputPartition[] partitions = new CsvInputPartition[npart];
+	for (int i = 0 ; i < npart ; i++) {
+		Integer[] fragid = new Integer[]{i, npart};
+		partitions[i] = new CsvInputPartition(fragid, "localhost");
+	}
+        return partitions;
     }
 
     @Override

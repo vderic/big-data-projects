@@ -43,7 +43,8 @@ public class CsvPartitionReader implements PartitionReader<InternalRow> {
         csvReader = new CSVReader(filereader);
         iterator = csvReader.iterator();
         iterator.next();
-	System.err.println("CreateCSvReader");
+	Integer[] fragid = csvInputPartition.getFragId();
+	System.err.println("CreateCSvReader: fragid=" + fragid[0] + ", fragcnt = " + fragid[1]);
 
     }
 
