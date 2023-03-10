@@ -35,15 +35,18 @@ public class CsvDataSourceRunner {
         Dataset<Row> dataset = sparkSession.read().schema(getSchema()).format("bugdbug")
                 .option("fileName", filepath).load();
 
-	//System.out.println("COUNT = " + dataset.count());
 	/*
+	//System.out.println("COUNT = " + dataset.count());
 	dataset.createOrReplaceTempView("bug");
-	Dataset<Row> regionset = sparkSession.sql("select avg(Unit_Price), max(Order_ID) from bug");
-        regionset.show();
+	//Dataset<Row> regionset = sparkSession.sql("select Item_Type, min(Unit_Price) as min_price, max(Total_Revenue) as max_revenue,  max(Total_Cost) as max_cost from bug group by Item_Type");
+	Dataset<Row> regionset = sparkSession.sql("select Item_Type, avg(Unit_Price) as avg_price, sum(Total_Cost) as sum_cost from bug group by Item_Type");
+        regionset.show(false);
+
 	*/
 
 	Map<String, String> aggr = new HashMap<String, String>(){{ put("Unit_Price", "sum"); put("Total_Cost", "avg");}};
 	dataset.groupBy("Item_Type").agg(aggr).show(false);
+	
 
 	byte[] b = new byte[32];
 	b[15] = 1;

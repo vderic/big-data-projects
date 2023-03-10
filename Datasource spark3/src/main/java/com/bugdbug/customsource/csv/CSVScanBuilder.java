@@ -58,8 +58,11 @@ public class CSVScanBuilder implements SupportsPushDownAggregates, SupportsPushD
 	    return true;
     }
 
+    /* always return false as kite will send multiple rows with the same key and Spark need to group the data again.
+     * Never able to fully complete grouping */
     public boolean supportCompletePushDown(Aggregation aggregation) {
 
+	    /*
 	    System.out.println("supportCompletePushDown: " + aggregation.toString());
 	    AggregateFunc[] func = aggregation.aggregateExpressions();
 	    Expression[] expr = aggregation.groupByExpressions();
@@ -83,7 +86,8 @@ public class CSVScanBuilder implements SupportsPushDownAggregates, SupportsPushD
 
 	    }
 	    System.out.println("END supportCompletePushDown(Aggregation)");
-	    return true;
+	    */
+	    return false;
     }
 
     public Predicate[] pushPredicates(Predicate[] predicates) {
