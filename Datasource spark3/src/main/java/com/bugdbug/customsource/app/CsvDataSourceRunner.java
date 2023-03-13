@@ -35,27 +35,25 @@ public class CsvDataSourceRunner {
         Dataset<Row> dataset = sparkSession.read().schema(getSchema()).format("bugdbug")
                 .option("fileName", filepath).load();
 
+	/* temp view */
 	/*
-	//System.out.println("COUNT = " + dataset.count());
 	dataset.createOrReplaceTempView("bug");
 	//Dataset<Row> regionset = sparkSession.sql("select Item_Type, min(Unit_Price) as min_price, max(Total_Revenue) as max_revenue,  max(Total_Cost) as max_cost from bug group by Item_Type");
-	Dataset<Row> regionset = sparkSession.sql("select Item_Type, avg(Unit_Price) as avg_price, sum(Total_Cost) as sum_cost from bug group by Item_Type");
+	Dataset<Row> regionset = sparkSession.sql("select Item_Type, avg(Unit_Price) as avg_price, sum(Total_Cost) as sum_cost from bug where Units_Sold > 2 group by Item_Type");
         regionset.show(false);
-
 	*/
+
 
 	/* aggregate case. use aggregate.csv */
-	/*
 	Map<String, String> aggr = new HashMap<String, String>(){{ put("Unit_Price", "sum"); put("Total_Cost", "avg");}};
-	dataset.groupBy("Item_Type").agg(aggr).show(false);
-	*/
+	dataset.filter("Units_Sold > 2").groupBy("Item_Type").agg(aggr).show(false);
 
 
 	/* required columns. use required.csv */
 	//dataset.select("Region", "Country" , "Item_Type", "Sales_Channel").filter("Sales_Channel = 'Online'").show(false);
 
 	/* all columns. use 1000....csv */
-	dataset.filter("Sales_Channel = 'Online' or Unit_Price > 100").show(false);
+	//dataset.filter("Sales_Channel = 'Online' or Unit_Price > 100").show(false);
 
 	byte[] b = new byte[32];
 	b[15] = 1;

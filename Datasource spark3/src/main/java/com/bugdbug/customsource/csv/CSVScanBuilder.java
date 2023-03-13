@@ -21,6 +21,8 @@ public class CSVScanBuilder implements SupportsPushDownAggregates, SupportsPushD
     private final Map<String, String> properties;
     private final CaseInsensitiveStringMap options;
     private Aggregation aggregation;
+    private Predicate[] pushedPredicates;
+    private Predicate[] nonpushedPredicates;
 
     public CSVScanBuilder(StructType schema,
                           Map<String, String> properties,
@@ -30,6 +32,8 @@ public class CSVScanBuilder implements SupportsPushDownAggregates, SupportsPushD
         this.properties = properties;
         this.options = options;
 	this.aggregation = null;
+	this.pushedPredicates = null;
+	this.nonpushedPredicates = null;
     }
 
     public boolean pushAggregation(Aggregation aggregation) {
@@ -74,13 +78,19 @@ public class CSVScanBuilder implements SupportsPushDownAggregates, SupportsPushD
 	    for (int i = 0 ; i < predicates.length ; i++) {
 		    System.out.println("Filter[" + i + "]: " + predicates[i].toString());
 	    }
-	    return predicates;
+
+	    pushedPredicates = predicates;
+	    nonpushedPredicates = new Predicate[0];
+	    return nonpushedPredicates;
     }
 
     /* Returns the predicates that are pushed to the data source via pushPredicates(Predicate[]) */
     public Predicate[] pushedPredicates() {
 	    System.out.println("pushedPredicates: pushed nothing");
-	    return new Predicate[0];
+	    if (pushedPredicates == null) {
+		    pushedPredicates = new Predicate[0];
+	    }
+	    return pushedPredicates;
     }
     	
     public void pruneColumns(StructType requiredSchema) {
