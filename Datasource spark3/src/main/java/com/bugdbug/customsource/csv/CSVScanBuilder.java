@@ -17,7 +17,7 @@ import org.apache.spark.sql.connector.expressions.Expression;
 import java.util.Map;
 
 public class CSVScanBuilder implements SupportsPushDownAggregates, SupportsPushDownV2Filters, SupportsPushDownRequiredColumns {
-    private final StructType schema;
+    private StructType schema;
     private final Map<String, String> properties;
     private final CaseInsensitiveStringMap options;
     private Aggregation aggregation;
@@ -104,7 +104,7 @@ public class CSVScanBuilder implements SupportsPushDownAggregates, SupportsPushD
     	
     public void pruneColumns(StructType requiredSchema) {
 	    System.out.println("pruneColumns: " + requiredSchema.toString());
-
+	    schema = requiredSchema;
     }
    
 

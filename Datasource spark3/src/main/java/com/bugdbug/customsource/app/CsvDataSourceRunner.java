@@ -44,11 +44,15 @@ public class CsvDataSourceRunner {
 
 	*/
 
+	/* aggregate case */
+	/*
 	Map<String, String> aggr = new HashMap<String, String>(){{ put("Unit_Price", "sum"); put("Total_Cost", "avg");}};
 	dataset.groupBy("Item_Type").agg(aggr).show(false);
+	*/
 
-//	dataset.show();
-	
+
+	/* required columns */
+	dataset.select("Region", "Country" , "Item_Type", "Sales_Channel").show(false);
 
 	byte[] b = new byte[32];
 	b[15] = 1;
