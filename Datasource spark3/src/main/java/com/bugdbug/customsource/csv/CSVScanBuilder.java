@@ -65,40 +65,21 @@ public class CSVScanBuilder implements SupportsPushDownAggregates, SupportsPushD
     /* always return false as kite will send multiple rows with the same key and Spark need to group the data again.
      * Never able to fully complete grouping */
     public boolean supportCompletePushDown(Aggregation aggregation) {
-
-	    /*
-	    System.out.println("supportCompletePushDown: " + aggregation.toString());
-	    AggregateFunc[] func = aggregation.aggregateExpressions();
-	    Expression[] expr = aggregation.groupByExpressions();
-
-	    System.out.println("Group By Columns");
-	    for (int i = 0 ; i < expr.length ; i++) {
-		    System.out.println(expr[i].describe());
-	    }
-
-	    System.out.println("Aggregate ");
-	    for (int i = 0 ; i < func.length ; i++) {
-		    System.out.println(func[i].describe());
-		    if (func[i] instanceof Avg) {
-			    System.out.println("AVG FOUND.. not supported");
-			    return false;
-		    }
-
-		    if (func[i] instanceof Sum) {
-			    System.out.println("SUM....here..");
-		    }
-
-	    }
-	    System.out.println("END supportCompletePushDown(Aggregation)");
-	    */
 	    return false;
     }
 
+    /* Pushes down predicates, and returns predicates that need to be evaluated after scanning */
     public Predicate[] pushPredicates(Predicate[] predicates) {
+	    System.out.println("pushPredicate:");
+	    for (int i = 0 ; i < predicates.length ; i++) {
+		    System.out.println("Filter[" + i + "]: " + predicates[i].toString());
+	    }
 	    return predicates;
     }
 
+    /* Returns the predicates that are pushed to the data source via pushPredicates(Predicate[]) */
     public Predicate[] pushedPredicates() {
+	    System.out.println("pushedPredicates: pushed nothing");
 	    return new Predicate[0];
     }
     	
