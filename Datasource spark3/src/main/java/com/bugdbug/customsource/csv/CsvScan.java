@@ -36,9 +36,9 @@ public class CsvScan implements Scan {
 	/* aggregate */
 	StructField[] structFields = new StructField[]{
                 new StructField("Item_Type", DataTypes.StringType, true, Metadata.empty()),
-                new StructField("SUM(Total_Cost)", DataTypes.DoubleType, true, Metadata.empty()),
-                new StructField("COUNT(Total_Cost)", DataTypes.IntegerType, true, Metadata.empty()),
-                new StructField("SUM(Unit_Price)", DataTypes.DoubleType, true, Metadata.empty())
+                new StructField("SUM(Total_Cost)", DataTypes.createDecimalType(14,4), true, Metadata.empty()),
+                new StructField("COUNT(Total_Cost)", DataTypes.LongType, true, Metadata.empty()),
+                new StructField("SUM(Unit_Price)", DataTypes.createDecimalType(14,4), true, Metadata.empty())
          };
 
 	schema = new StructType(structFields);
